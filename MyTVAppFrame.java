@@ -4,6 +4,10 @@
  * and open the template in the editor.
  */
 package mytvapp;
+import javax.swing.*;
+
+import java.io.*;
+import java.awt.Desktop;
 
 /**
  *
@@ -13,12 +17,14 @@ public class MyTVAppFrame extends javax.swing.JFrame {
     private Integer Show;
     private Integer Season;
     private Integer episode;
-    private String movieTitle;
+    private JFileChooser fc;
 
     /**
      * Creates new form MyTVAppFrame
      */
     public MyTVAppFrame() {
+        //Create a file chooser
+        fc = new JFileChooser();
         initComponents();
     }
 
@@ -34,6 +40,8 @@ public class MyTVAppFrame extends javax.swing.JFrame {
         chooseTypeCB = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         select = new javax.swing.JButton();
+        FileChooser = new javax.swing.JButton();
+        FileName = new java.awt.Label();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,17 +64,32 @@ public class MyTVAppFrame extends javax.swing.JFrame {
             }
         });
 
+        FileChooser.setText("File");
+        FileChooser.setFocusable(false);
+        FileChooser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                FileChooserMouseClicked(evt);
+            }
+        });
+
+        FileName.setEnabled(false);
+        FileName.setText("label1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(81, 81, 81)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(chooseTypeCB, 0, 229, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(select, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(90, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(chooseTypeCB, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(select, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(FileName, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(FileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(242, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -75,10 +98,16 @@ public class MyTVAppFrame extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(chooseTypeCB, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 175, Short.MAX_VALUE)
+                .addGap(38, 38, 38)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(FileChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(FileName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
                 .addComponent(select, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(84, 84, 84))
         );
+
+        FileName.getAccessibleContext().setAccessibleName("");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -95,6 +124,37 @@ public class MyTVAppFrame extends javax.swing.JFrame {
 //            movieTitle =
         }
     }//GEN-LAST:event_selectMouseClicked
+
+    private void FileChooserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FileChooserMouseClicked
+        // TODO add your handling code here:
+        int returnVal = fc.showOpenDialog(MyTVAppFrame.this);
+
+        //first check if Desktop is supported by Platform or not
+        if(!Desktop.isDesktopSupported()){
+            System.out.println("Desktop is not supported");
+            return;
+        }
+        Desktop desktop = Desktop.getDesktop();
+        
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            FileName.setText(file.toString());
+            //This is where a real application would open the file.
+            //System.out.println(file);
+            String s = file.getParent();
+            //System.out.println(s);
+//            if(file.exists()){
+//                try{
+//                    desktop.open(file);
+//                }
+//                catch (IOException e){
+//                    System.out.println("Caught an IO Exception "+e);
+//                };
+//            }
+        } else {
+            
+        }
+    }//GEN-LAST:event_FileChooserMouseClicked
 
     /**
      * @param args the command line arguments
@@ -136,6 +196,8 @@ public class MyTVAppFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton FileChooser;
+    private java.awt.Label FileName;
     private javax.swing.JComboBox<String> chooseTypeCB;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton select;
