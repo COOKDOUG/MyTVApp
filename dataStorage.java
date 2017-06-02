@@ -22,7 +22,7 @@ public class dataStorage {
         
     }
     public File checkDataStorage(File parentFile){
-        File dataLocation = new File(parentFile.toString().concat("/Data Storage"));
+        File dataLocation = new File(parentFile.toString().concat("/Data Storage.txt"));
         try {
             dataLocation.createNewFile();
         } catch (IOException e){
