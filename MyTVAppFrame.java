@@ -8,6 +8,7 @@ import javax.swing.*;
 
 import java.io.*;
 import java.awt.Desktop;
+import java.util.LinkedList;
 
 /**
  *
@@ -18,6 +19,10 @@ public class MyTVAppFrame extends javax.swing.JFrame {
     private Integer Season;
     private Integer episode;
     private JFileChooser fc;
+    private File parentLocation;
+    private String parentLocationString;
+    private LinkedList movieTitlesAvailable;
+    private Desktop desktop;
 
     /**
      * Creates new form MyTVAppFrame
@@ -26,6 +31,12 @@ public class MyTVAppFrame extends javax.swing.JFrame {
         //Create a file chooser
         fc = new JFileChooser();
         initComponents();
+        desktop = Desktop.getDesktop();
+        movieTitlesAvailable = new LinkedList();
+        movieTitlesAvailable.add("Batman Begins.mp4");
+        movieTitlesAvailable.add("Deadpool.mp4");
+        movieTitlesAvailable.add("Guardians of the Galaxy.mp4");
+        movieTitlesAvailable.add("X-Men Days Of Future Past.mp4");
     }
 
     /**
@@ -42,6 +53,7 @@ public class MyTVAppFrame extends javax.swing.JFrame {
         select = new javax.swing.JButton();
         FileChooser = new javax.swing.JButton();
         FileName = new java.awt.Label();
+        Randomizer = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -75,6 +87,15 @@ public class MyTVAppFrame extends javax.swing.JFrame {
         FileName.setEnabled(false);
         FileName.setText("label1");
 
+        Randomizer.setText("Random");
+        Randomizer.setEnabled(false);
+        Randomizer.setFocusable(false);
+        Randomizer.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                RandomizerMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -88,7 +109,8 @@ public class MyTVAppFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(FileName, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(FileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(FileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Randomizer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(242, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -102,7 +124,9 @@ public class MyTVAppFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(FileChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(FileName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
+                .addGap(46, 46, 46)
+                .addComponent(Randomizer)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addComponent(select, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(84, 84, 84))
         );
@@ -134,14 +158,14 @@ public class MyTVAppFrame extends javax.swing.JFrame {
             System.out.println("Desktop is not supported");
             return;
         }
-        Desktop desktop = Desktop.getDesktop();
         
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
+            parentLocation = file.getParentFile();
+            parentLocationString = file.getParent().concat("/");
             FileName.setText(file.toString());
             //This is where a real application would open the file.
             //System.out.println(file);
-            String s = file.getParent();
             //System.out.println(s);
 //            if(file.exists()){
 //                try{
@@ -154,7 +178,21 @@ public class MyTVAppFrame extends javax.swing.JFrame {
         } else {
             
         }
+        setRandomizerAvailable();
     }//GEN-LAST:event_FileChooserMouseClicked
+
+    private void RandomizerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RandomizerMouseClicked
+        // TODO add your handling code here:
+        int totalMovies = movieTitlesAvailable.size();
+        String randomMovie = parentLocationString.concat(movieTitlesAvailable.get((int) (Math.random() * totalMovies + 1)).toString());
+        try{
+            File randomMovieFile = new File(randomMovie);
+            desktop.open(randomMovieFile);
+        }
+        catch (IOException e){
+            System.out.println("Caught an IO Exception in Randomizer "+e);
+        };
+    }//GEN-LAST:event_RandomizerMouseClicked
 
     /**
      * @param args the command line arguments
@@ -194,10 +232,18 @@ public class MyTVAppFrame extends javax.swing.JFrame {
     private int getRandomNumber(int maximumSearch){
         return (int) (Math.random() * maximumSearch + 1);
     }
+    private void setRandomizerAvailable(){
+        if (parentLocationString.isEmpty()){
+            Randomizer.setEnabled(false);
+        } else {
+            Randomizer.setEnabled(true);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton FileChooser;
     private java.awt.Label FileName;
+    private javax.swing.JButton Randomizer;
     private javax.swing.JComboBox<String> chooseTypeCB;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton select;
