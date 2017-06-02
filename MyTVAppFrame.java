@@ -30,13 +30,18 @@ public class MyTVAppFrame extends javax.swing.JFrame {
     public MyTVAppFrame() {
         //Create a file chooser
         fc = new JFileChooser();
+        // Base level parent location
+        parentLocation = new File("C:/Users/cookd/Desktop/Movies");
         initComponents();
         desktop = Desktop.getDesktop();
-        movieTitlesAvailable = new LinkedList();
-        movieTitlesAvailable.add("Batman Begins.mp4");
-        movieTitlesAvailable.add("Deadpool.mp4");
-        movieTitlesAvailable.add("Guardians of the Galaxy.mp4");
-        movieTitlesAvailable.add("X-Men Days Of Future Past.mp4");
+//        movieTitlesAvailable = new LinkedList();
+//        movieTitlesAvailable.add("Batman Begins.mp4");
+//        movieTitlesAvailable.add("Deadpool.mp4");
+//        movieTitlesAvailable.add("Guardians of the Galaxy.mp4");
+//        movieTitlesAvailable.add("X-Men Days Of Future Past.mp4");
+//        dataStorage ds = new dataStorage();
+//        File dataStorageFileLocation = ds.checkDataStorage(parentLocation);
+//        ds.writeToFile(dataStorageFileLocation, movieTitlesAvailable.get(3).toString());
     }
 
     /**
@@ -165,8 +170,6 @@ public class MyTVAppFrame extends javax.swing.JFrame {
             parentLocationString = file.getParent().concat("/");
             FileName.setText(file.toString());
             //This is where a real application would open the file.
-            //System.out.println(file);
-            //System.out.println(s);
 //            if(file.exists()){
 //                try{
 //                    desktop.open(file);
@@ -176,7 +179,6 @@ public class MyTVAppFrame extends javax.swing.JFrame {
 //                };
 //            }
         } else {
-            
         }
         setRandomizerAvailable();
     }//GEN-LAST:event_FileChooserMouseClicked
@@ -228,7 +230,6 @@ public class MyTVAppFrame extends javax.swing.JFrame {
             }
         });
     }
-    
     private int getRandomNumber(int maximumSearch){
         return (int) (Math.random() * maximumSearch + 1);
     }
