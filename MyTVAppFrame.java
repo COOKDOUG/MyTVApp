@@ -37,14 +37,14 @@ public class MyTVAppFrame extends javax.swing.JFrame {
         ds = new dataStorage();
         
         // Find the Data Storage text file
-        parentLocationApp = new File("C:/Users/cookd/Documents/NetBeansProjects/MyTVApp/src");
+        parentLocationApp = new File("C:/Users/cookd/Documents/NetBeansProjects/MyTVApp/src","/Data Storage.txt");
         //ds.checkDataStorageApp(parentLocationApp);
         
         // Base level parent location
-        parentLocationMovie = new File("C:/Users/cookd/Documents/NetBeansProjects/MyTVApp/src");
-        //ds.checkMovieDataStorage(parentLocationMovie);
-        parentLocationTVShow = new File("C:/Users/cookd/Documents/NetBeansProjects/MyTVApp/src");
-        //ds.checkTVShowDataStorage(parentLocationTVShow);
+        parentLocationMovie = new File("C:/Users/cookd/Documents/NetBeansProjects/MyTVApp/src", "/Movie Data Storage.txt");
+        //ds.checkDataStorageApp(parentLocationMovie);
+        parentLocationTVShow = new File("C:/Users/cookd/Documents/NetBeansProjects/MyTVApp/src", "/TVShow Data Storage.txt");
+        //ds.checkDataStorageApp(parentLocationTVShow);
         
         initComponents();
         desktop = Desktop.getDesktop();

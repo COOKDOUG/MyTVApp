@@ -21,29 +21,9 @@ public class dataStorage {
     public dataStorage(){
         
     }
-    public File checkDataStorage(File parentFile){
+    public File checkDataStorage(File parentFile, String s){
         // Supposed to check for the Data Storage text file containing 
-        File dataLocation = new File(parentFile.toString().concat("/Data Storage.txt"));
-        try {
-            dataLocation.createNewFile();
-        } catch (IOException e){
-            System.out.println("Caught an IO Exception in dataStorage class "+e);
-        }
-        return dataLocation;
-    }
-    public File checkTVShowDataStorage(File parentFile){
-        // Supposed to check for the Data Storage text file containing 
-        File dataLocation = new File(parentFile.toString().concat("/TVShow Data Storage.txt"));
-        try {
-            dataLocation.createNewFile();
-        } catch (IOException e){
-            System.out.println("Caught an IO Exception in dataStorage class "+e);
-        }
-        return dataLocation;
-    }
-    public File checkMovieDataStorage(File parentFile){
-        // Supposed to check for the Data Storage text file containing 
-        File dataLocation = new File(parentFile.toString().concat("/Movie Data Storage.txt"));
+        File dataLocation = new File(parentFile.toString().concat(s));
         try {
             dataLocation.createNewFile();
         } catch (IOException e){
