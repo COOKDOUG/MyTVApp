@@ -19,10 +19,14 @@ public class MyTVAppFrame extends javax.swing.JFrame {
     private Integer Season;
     private Integer episode;
     private JFileChooser fc;
-    private File parentLocation;
-    private String parentLocationString;
+    private File parentLocationMovie;
+    private File parentLocationTVShow;
+    private File parentLocationApp;
+//    private String parentLocationString;
     private LinkedList movieTitlesAvailable;
     private Desktop desktop;
+    private String moviesOrTVShows;
+    private dataStorage ds;
 
     /**
      * Creates new form MyTVAppFrame
@@ -30,17 +34,27 @@ public class MyTVAppFrame extends javax.swing.JFrame {
     public MyTVAppFrame() {
         //Create a file chooser
         fc = new JFileChooser();
+        ds = new dataStorage();
+        
+        // Find the Data Storage text file
+        parentLocationApp = new File("C:/Users/cookd/Documents/NetBeansProjects/MyTVApp/src");
+        //ds.checkDataStorageApp(parentLocationApp);
+        
         // Base level parent location
-        parentLocation = new File("C:/Users/cookd/Desktop/Movies");
+        parentLocationMovie = new File("C:/Users/cookd/Documents/NetBeansProjects/MyTVApp/src");
+        //ds.checkMovieDataStorage(parentLocationMovie);
+        parentLocationTVShow = new File("C:/Users/cookd/Documents/NetBeansProjects/MyTVApp/src");
+        //ds.checkTVShowDataStorage(parentLocationTVShow);
+        
         initComponents();
         desktop = Desktop.getDesktop();
+        moviesOrTVShows = "Movies";
 //        movieTitlesAvailable = new LinkedList();
 //        movieTitlesAvailable.add("Batman Begins.mp4");
 //        movieTitlesAvailable.add("Deadpool.mp4");
 //        movieTitlesAvailable.add("Guardians of the Galaxy.mp4");
 //        movieTitlesAvailable.add("X-Men Days Of Future Past.mp4");
-//        dataStorage ds = new dataStorage();
-//        File dataStorageFileLocation = ds.checkDataStorage(parentLocation);
+//        File dataStorageFileLocation = ds.checkDataStorageMovie(parentLocation);
 //        ds.writeToFile(dataStorageFileLocation, movieTitlesAvailable.get(3).toString());
     }
 
@@ -64,6 +78,11 @@ public class MyTVAppFrame extends javax.swing.JFrame {
 
         chooseTypeCB.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         chooseTypeCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Movies", "TV Shows" }));
+        chooseTypeCB.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                chooseTypeCBMouseClicked(evt);
+            }
+        });
 
         jLabel1.setBackground(new java.awt.Color(0, 0, 0));
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
@@ -143,7 +162,7 @@ public class MyTVAppFrame extends javax.swing.JFrame {
 
     private void selectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectMouseClicked
         // Here we will select the movie or TV Show to watch next.  This will be randomly selected.:
-        if (chooseTypeCB.getItemAt(chooseTypeCB.getSelectedIndex()).equals("TV Shows")){
+        if (moviesOrTVShows.equals("TV Shows")){
             Show = getRandomNumber(0);
             Season = getRandomNumber(0);
             episode = getRandomNumber(0);
@@ -166,8 +185,12 @@ public class MyTVAppFrame extends javax.swing.JFrame {
         
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
-            parentLocation = file.getParentFile();
-            parentLocationString = file.getParent().concat("/");
+            if (moviesOrTVShows.equals("Movies")){
+                parentLocationMovie = file.getParentFile();
+            } else {
+                parentLocationTVShow = file.getParentFile();
+            }
+//            parentLocationString = file.getParent().concat("/");
             FileName.setText(file.toString());
             //This is where a real application would open the file.
 //            if(file.exists()){
@@ -186,15 +209,22 @@ public class MyTVAppFrame extends javax.swing.JFrame {
     private void RandomizerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RandomizerMouseClicked
         // TODO add your handling code here:
         int totalMovies = movieTitlesAvailable.size();
-        String randomMovie = parentLocationString.concat(movieTitlesAvailable.get((int) (Math.random() * totalMovies + 1)).toString());
-        try{
-            File randomMovieFile = new File(randomMovie);
-            desktop.open(randomMovieFile);
-        }
-        catch (IOException e){
-            System.out.println("Caught an IO Exception in Randomizer "+e);
-        };
+//        String randomMovie = parentLocationString.concat(movieTitlesAvailable.get((int) (Math.random() * totalMovies + 1)).toString());
+//        try{
+//            File randomMovieFile = new File(randomMovie);
+//            desktop.open(randomMovieFile);
+//        }
+//        catch (IOException e){
+//            System.out.println("Caught an IO Exception in Randomizer "+e);
+//        };
     }//GEN-LAST:event_RandomizerMouseClicked
+
+    private void chooseTypeCBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_chooseTypeCBMouseClicked
+        // TODO add your handling code here:
+        if (!chooseTypeCB.getItemAt(chooseTypeCB.getSelectedIndex()).equals(moviesOrTVShows)){
+            updateFileLabel();
+        }
+    }//GEN-LAST:event_chooseTypeCBMouseClicked
 
     /**
      * @param args the command line arguments
@@ -234,11 +264,25 @@ public class MyTVAppFrame extends javax.swing.JFrame {
         return (int) (Math.random() * maximumSearch + 1);
     }
     private void setRandomizerAvailable(){
-        if (parentLocationString.isEmpty()){
-            Randomizer.setEnabled(false);
+//        if (parentLocationString.isEmpty()){
+//            Randomizer.setEnabled(false);
+//        } else {
+//            Randomizer.setEnabled(true);
+//        }
+    }
+    private void updateFileLabel(){
+        // Only enter here if chooseTypeCB changed.
+        moviesOrTVShows = chooseTypeCB.getItemAt(chooseTypeCB.getSelectedIndex());
+        if (moviesOrTVShows.equals("Movies")){
+            // Movies
+            FileName.setText(parentLocationMovie.toString());
+            //ds.locateFileMovie(parentLocationMovie);
         } else {
-            Randomizer.setEnabled(true);
+            // TV Shows
+            FileName.setText(parentLocationTVShow.toString());
+            //ds.locateFileMovie(parentLocationTVShow);
         }
+        setRandomizerAvailable();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

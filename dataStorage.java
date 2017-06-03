@@ -22,7 +22,28 @@ public class dataStorage {
         
     }
     public File checkDataStorage(File parentFile){
+        // Supposed to check for the Data Storage text file containing 
         File dataLocation = new File(parentFile.toString().concat("/Data Storage.txt"));
+        try {
+            dataLocation.createNewFile();
+        } catch (IOException e){
+            System.out.println("Caught an IO Exception in dataStorage class "+e);
+        }
+        return dataLocation;
+    }
+    public File checkTVShowDataStorage(File parentFile){
+        // Supposed to check for the Data Storage text file containing 
+        File dataLocation = new File(parentFile.toString().concat("/TVShow Data Storage.txt"));
+        try {
+            dataLocation.createNewFile();
+        } catch (IOException e){
+            System.out.println("Caught an IO Exception in dataStorage class "+e);
+        }
+        return dataLocation;
+    }
+    public File checkMovieDataStorage(File parentFile){
+        // Supposed to check for the Data Storage text file containing 
+        File dataLocation = new File(parentFile.toString().concat("/Movie Data Storage.txt"));
         try {
             dataLocation.createNewFile();
         } catch (IOException e){
@@ -32,7 +53,7 @@ public class dataStorage {
     }
     
     public void writeToFile(File fileLocation, String content){
-        // Writes Movies to the Movie text file.
+        // Writes Movies to the Movie text file, TV Shows to the TV Show file.
         String s = fileLocation.toString();
         BufferedWriter bw = null;
         FileWriter fw = null;
@@ -57,7 +78,7 @@ public class dataStorage {
             }
         } catch (IOException e) {
             System.out.println("Caught an IO Exception in dataStorage writeToFile class "+e);
-            e.printStackTrace();
+//            e.printStackTrace();
         } finally {
             // Closing the buffered writer and file writer.
             try {
@@ -68,7 +89,7 @@ public class dataStorage {
                     fw.close();
                 }
             } catch (IOException ex) {
-                ex.printStackTrace();
+//                ex.printStackTrace();
             }
         }
     }
